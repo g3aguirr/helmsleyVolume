@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\VolumeMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\HelmsleyVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\ImageLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\VolumeGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\MeasurementTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\ScreenshotTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\FileSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\UIExtensions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\CuttingPlane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\VolumeMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\VolumeGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\HelmsleyVolume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\ImageLoader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\MeasurementTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\ScreenshotTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\Interactable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\FileSelector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\UIExtensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\CuttingPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\g3aguirre\Documents\CAL\calvr_plugins-HelmsleyVolume\calvr_plugins-HelmsleyVolume\calit2\HelmsleyVolume\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{17A10A3A-FBA9-3A62-8DE9-953D328EBDF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7EE501B9-0BB8-3076-A4EB-B70334C8E13D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
