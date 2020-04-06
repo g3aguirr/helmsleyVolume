@@ -249,6 +249,10 @@ public:
 		_percentRounding = new osg::Uniform("percentRounding", 0.0f);
 		(_geode->getDrawable(0))->getOrCreateStateSet()->addUniform(_absoluteRounding);
 		(_geode->getDrawable(0))->getOrCreateStateSet()->addUniform(_percentRounding);
+
+		
+		setProgram(getOrLoadProgram());
+		addUniform("SV", osg::Vec2(1.0f, 1.0f));
 	}
 
 	virtual void createGeometry();
@@ -260,9 +264,28 @@ public:
 
 	virtual void setRounding(float absRounding, float percentRounding);
 
+
+
+	virtual void setProgram(osg::Program* p) { _program = p; _dirty = true; }
+	virtual osg::Program* getProgram() { return _program; }
+	virtual osg::Geode* getGeode() { return _geode; }
+
+	template <typename T>
+	void addUniform(std::string uniform, T initialvalue);
+	void addUniform(std::string uniform);
+	virtual void addUniform(osg::Uniform* uniform);
+	virtual osg::Uniform* getUniform(std::string uniform);
+	virtual void setShaderDefine(std::string name, std::string definition, osg::StateAttribute::Values on);
+
+
+
+
 protected:
 	osg::ref_ptr<osg::MatrixTransform> _transform;
 	osg::ref_ptr<osg::Geode> _geode;
+
+	static osg::Program* getOrLoadProgram();
+	static osg::Program* _triangleProg;
 
 	osg::Vec4 _color;
 	osg::Uniform* _absoluteRounding;
@@ -270,6 +293,9 @@ protected:
 
 	float leftPointX;
 	float rightPointX;
+
+	osg::ref_ptr<osg::Program> _program;
+	std::map<std::string, osg::Uniform*> _uniforms;
 
 };
 

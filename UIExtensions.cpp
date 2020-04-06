@@ -8,6 +8,7 @@ using namespace cvr;
 
 osg::Program* ColorPickerSaturationValue::_svprogram = nullptr;
 osg::Program* ColorPickerHue::_hueprogram = nullptr;
+osg::Program* Tent::_triangleProg = nullptr;
 
 
 #pragma region VisibilityToggle
@@ -437,6 +438,7 @@ TentWindow::TentWindow() :
 	_tent = new Tent(osg::Vec4(1.0,0.0,0.0,1.0));
 	_tent->setPercentPos(osg::Vec3(.7, -0.1, -0.5));
 	_tent->setPercentSize(osg::Vec3( 2, 0.015, 1));
+
 	_bknd->addChild(_tent);
 
 	_bottomWidth = new CallbackSlider();
@@ -473,12 +475,14 @@ void TentWindow::uiCallback(UICallbackCaller* ui) {
 		std::cout << "Width: " << _bottomWidth->getAdjustedValue() << std::endl;
 		_tent->setPercentSize(osg::Vec3(_bottomWidth->getAdjustedValue()*4, 0.015, 1));
 		_volume->_computeUniforms["OpacityWidth"]->set(_bottomWidth->getAdjustedValue()*2);
+		_tent->addUniform("Width", _bottomWidth->getAdjustedValue()*2);
 		
 	}
 	if (ui == _centerPos) {
 		std::cout << "Center: " << _centerPos->getAdjustedValue() << std::endl;
 		_tent->setPercentPos(osg::Vec3(_centerPos->getAdjustedValue(), -0.1, -0.5));
 		_volume->_computeUniforms["OpacityCenter"]->set(_centerPos->getAdjustedValue());
+		_tent->addUniform("Center", _centerPos->getAdjustedValue());
 	}
 	_volume->setDirtyAll();
 	
@@ -514,6 +518,15 @@ void Tent::createGeometry()
 
 	_geode->addDrawable(polyGeom);
 
+
+	osg::Vec2Array* texcoords = new osg::Vec2Array;
+	texcoords->push_back(osg::Vec2(1, 0));
+	texcoords->push_back(osg::Vec2(0.5, 1));
+	texcoords->push_back(osg::Vec2(0, 0));
+
+	polyGeom->setVertexAttribArray(1, texcoords, osg::Array::BIND_PER_VERTEX);
+	setTransparent(true);
+
 	updateGeometry();
 }
 
@@ -528,6 +541,13 @@ void Tent::updateGeometry()
 	mat.makeScale(_actualSize);
 	mat.postMultTranslate(_actualPos);
 	_transform->setMatrix(mat);
+
+
+	if (_program.valid())
+	{
+		_geode->getDrawable(0)->getOrCreateStateSet()->setAttributeAndModes(_program.get(), osg::StateAttribute::ON);
+
+	}
 }
 
 void Tent::setColor(osg::Vec4 color)
@@ -536,12 +556,6 @@ void Tent::setColor(osg::Vec4 color)
 	{
 		_color = color;
 		_dirty = true;
-		/*
-		//No need to update children / set dirty when only color changes
-		osg::Vec4Array* colors = new osg::Vec4Array;
-		colors->push_back(_color);
-		((osg::Geometry*)_geode->getDrawable(0))->setColorArray(colors, osg::Array::BIND_OVERALL);
-		*/
 	}
 }
 
@@ -566,6 +580,49 @@ void Tent::setRounding(float absRounding, float percentRounding)
 }
 
 
+template <typename T>
+void Tent::addUniform(std::string uniform, T initialvalue)
+{
+	_uniforms[uniform] = new osg::Uniform(uniform.c_str(), initialvalue);
+	_geode->getOrCreateStateSet()->addUniform(_uniforms[uniform]);
+}
+
+void Tent::addUniform(std::string uniform)
+{
+	_uniforms[uniform] = new osg::Uniform(uniform.c_str(), 0.0f);
+	_geode->getOrCreateStateSet()->addUniform(_uniforms[uniform]);
+}
+
+void Tent::addUniform(osg::Uniform* uniform)
+{
+	_uniforms[uniform->getName()] = uniform;
+	_geode->getOrCreateStateSet()->addUniform(uniform);
+}
+
+osg::Uniform* Tent::getUniform(std::string uniform)
+{
+	return _uniforms[uniform];
+}
+
+void Tent::setShaderDefine(std::string name, std::string define, osg::StateAttribute::Values on)
+{
+	_geode->getOrCreateStateSet()->setDefine(name, define, on);
+}
+
+osg::Program* Tent::getOrLoadProgram()
+{
+	if (!_triangleProg)
+	{
+		const std::string vert = HelmsleyVolume::loadShaderFile("transferFunction.vert");
+		const std::string frag = HelmsleyVolume::loadShaderFile("triangle.frag");
+		_triangleProg = new osg::Program;
+		_triangleProg->setName("Triangle");
+		_triangleProg->addShader(new osg::Shader(osg::Shader::VERTEX, vert));
+		_triangleProg->addShader(new osg::Shader(osg::Shader::FRAGMENT, frag));
+	}
+
+	return _triangleProg;
+}
 
 
 
