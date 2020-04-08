@@ -93,7 +93,7 @@ void NewVolumeMenu::init()
 
 	TentWindow* tentWindow = new TentWindow();
 	_menu->addChild(tentWindow);
-	tentWindow->setPercentSize(osg::Vec3(1, 0, .5));
+	tentWindow->setPercentSize(osg::Vec3(1, 0, .75));
 	tentWindow->setPercentPos(osg::Vec3(0, 0, -1));
 	tentWindow->setVolume(_volume);
 	//_menu->addChild(cp);
@@ -136,7 +136,7 @@ void NewVolumeMenu::init()
 
 	label = new UIText("Density", 30.0f, osgText::TextBase::LEFT_CENTER);
 	label->setPercentPos(osg::Vec3(0.1, 0, 0));
-	list->addChild(label);
+	//list->addChild(label);
 
 	_density = new CallbackSlider();
 	_density->setPercentPos(osg::Vec3(0.025, 0, 0.05));
@@ -149,7 +149,7 @@ void NewVolumeMenu::init()
 	_density->setCallback(this);
 	_density->setPercent(1);
 
-	list->addChild(_density);
+	//list->addChild(_density);
 
 
 	label = new UIText("Threshold", 30.0f, osgText::TextBase::LEFT_CENTER);
@@ -180,9 +180,10 @@ void NewVolumeMenu::init()
 
 	label = new UIText("Color", 30.0f, osgText::TextBase::LEFT_CENTER);
 	label->setPercentPos(osg::Vec3(0.1, 0, 0));
-	list->addChild(label);
+	//list->addChild(label);
 
 	UIList* list2 = new UIList(UIList::LEFT_TO_RIGHT, UIList::CUT);
+	
 	
 	_transferFunction = new CallbackRadial();
 	_transferFunction->allowNoneSelected(false);
@@ -203,10 +204,11 @@ void NewVolumeMenu::init()
 	_colorDisplay->setProgram(p);
 	_colorDisplay->addUniform(_volume->_computeUniforms["ContrastBottom"]);
 	_colorDisplay->addUniform(_volume->_computeUniforms["ContrastTop"]);
+	_colorDisplay->setPercentSize(osg::Vec3(1.0, 1.0, .5));
+	_colorDisplay->setPercentPos(osg::Vec3(0.0, 0.0, -0.5));
 
 
-
-	UIText* bnw = new UIText("Black and White", 30.0f, osgText::TextBase::CENTER_CENTER);
+	UIText* bnw = new UIText("Grayscale", 40.0f, osgText::TextBase::CENTER_CENTER);
 	bnw->setColor(osg::Vec4(0.8, 1, 0.8, 1));
 	UIText* rnbw = new UIText("Rainbow", 40.0f, osgText::TextBase::CENTER_CENTER);
 	rnbw->setColor(osg::Vec4(1, 0.8, 0.8, 1));
@@ -569,7 +571,7 @@ void NewVolumeMenu::uiCallback(UICallbackCaller * item)
 			transferFunction = "vec3(ra.r);";
 			_volume->getCompute()->getOrCreateStateSet()->setDefine("COLOR_FUNCTION", transferFunction, osg::StateAttribute::ON);
 			_colorDisplay->setShaderDefine("COLOR_FUNCTION", transferFunction, osg::StateAttribute::ON);
-			_colorMenu->setActive(false, false);
+			//_colorMenu->setActive(false, false);
 			((UIText*)_blacknwhite->getChild(0))->setColor(UI_ACTIVE_COLOR);
 			((UIText*)_rainbow->getChild(0))->setColor(UI_INACTIVE_COLOR);
 			((UIText*)_solid->getChild(0))->setColor(UI_INACTIVE_COLOR);
@@ -581,7 +583,7 @@ void NewVolumeMenu::uiCallback(UICallbackCaller * item)
 			
 			_volume->getCompute()->getOrCreateStateSet()->setDefine("COLOR_FUNCTION", transferFunction, osg::StateAttribute::ON);
 			_colorDisplay->setShaderDefine("COLOR_FUNCTION", transferFunction, osg::StateAttribute::ON);
-			_colorMenu->setActive(false, false);
+			//_colorMenu->setActive(false, false);
 			((UIText*)_blacknwhite->getChild(0))->setColor(UI_INACTIVE_COLOR);
 			((UIText*)_rainbow->getChild(0))->setColor(UI_ACTIVE_COLOR);
 			((UIText*)_solid->getChild(0))->setColor(UI_INACTIVE_COLOR);

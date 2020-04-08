@@ -434,27 +434,21 @@ TentWindow::TentWindow() :
 {
 	_bknd = new UIQuadElement(UI_BACKGROUND_COLOR);
 	addChild(_bknd);
+	_bknd->setPercentSize(osg::Vec3(1, 1, 1));
 
-	_tent = new Tent(osg::Vec4(1.0,0.0,0.0,1.0));
-	_tent->setPercentPos(osg::Vec3(.7, -0.1, -0.5));
-	_tent->setPercentSize(osg::Vec3( 2, 0.015, 1));
+	_tent = new Tent(UI_BLUE_COLOR);
+	_tent->setPercentPos(osg::Vec3(.7, 0, 0));
+	_tent->setPercentSize(osg::Vec3(1, 0.015, .5));
 
 	_bknd->addChild(_tent);
 
-	_bottomWidth = new CallbackSlider();
-	_bottomWidth->setPercentPos(osg::Vec3(0.025, 0, -0.60));
-	_bottomWidth->setPercentSize(osg::Vec3(0.9, 1, 0.2));
-	_bottomWidth->handle->setAbsoluteSize(osg::Vec3(20, 0, 0));
-	_bottomWidth->handle->setAbsolutePos(osg::Vec3(-10, -0.2f, 0));
-	_bottomWidth->handle->setPercentSize(osg::Vec3(0, 1, 1));
-	_bottomWidth->setMax(1.0f);
-	_bottomWidth->setMin(0.001f);
-	_bottomWidth->setCallback(this);
-	_bottomWidth->setPercent(.5);
+	UIList* list = new UIList(UIList::TOP_TO_BOTTOM, UIList::CONTINUE);
+	list->setPercentPos(osg::Vec3(0, 0, -.50));
+	list->setPercentSize(osg::Vec3(1, 1, .6));
+	list->setAbsoluteSpacing(1);
+	_bknd->addChild(list);
 
 	_centerPos = new CallbackSlider();
-	_centerPos->setPercentPos(osg::Vec3(0.025, 0, -0.80));
-	_centerPos->setPercentSize(osg::Vec3(0.9, 1, 0.2));
 	_centerPos->handle->setAbsoluteSize(osg::Vec3(20, 0, 0));
 	_centerPos->handle->setAbsolutePos(osg::Vec3(-10, -0.2f, 0));
 	_centerPos->handle->setPercentSize(osg::Vec3(0, 1, 1));
@@ -462,27 +456,78 @@ TentWindow::TentWindow() :
 	_centerPos->setMin(0.001f);
 	_centerPos->setCallback(this);
 	_centerPos->setPercent(.7);
+
+	_bottomWidth = new CallbackSlider();
+	_bottomWidth->handle->setAbsoluteSize(osg::Vec3(20, 0, 0));
+	_bottomWidth->handle->setAbsolutePos(osg::Vec3(-10, -0.2f, 0));
+	_bottomWidth->handle->setPercentSize(osg::Vec3(0, 1, 1));
+	_bottomWidth->handle->setColor(osg::Vec4(1.0, .8, .8, 0.0));
+	_bottomWidth->setMax(1.0f);
+	_bottomWidth->setMin(0.001f);
+	_bottomWidth->setCallback(this);
+	_bottomWidth->setPercent(.5);
+
+	_topWidth = new CallbackSlider();
+	_topWidth->handle->setAbsoluteSize(osg::Vec3(20, 0, 0));
+	_topWidth->handle->setAbsolutePos(osg::Vec3(-10, -0.2f, 0));
+	_topWidth->handle->setPercentSize(osg::Vec3(0, 1, 1));
+	_topWidth->handle->setColor(osg::Vec4(1.0, .8, .8, 0.0));
+	_topWidth->setMax(1.0f);
+	_topWidth->setMin(0.001f);
+	_topWidth->setCallback(this);
+	_topWidth->setPercent(0.0);
+
+	_height = new CallbackSlider();
+	_height->handle->setAbsoluteSize(osg::Vec3(20, 0, 0));
+	_height->handle->setAbsolutePos(osg::Vec3(-10, -0.2f, 0));
+	_height->handle->setPercentSize(osg::Vec3(0, 1, 1));
+	_height->handle->setColor(osg::Vec4(1.0, .8, .8, 0.0));
+	_height->setMax(1.0f);
+	_height->setMin(0.001f);
+	_height->setCallback(this);
+	_height->setPercent(1.0);
+
+	UIText* cLabel = new UIText("Center Position", 30.0f, osgText::TextBase::LEFT_CENTER);
+	UIText* bLabel = new UIText("Bottom Width", 30.0f, osgText::TextBase::LEFT_CENTER);
+	UIText* tLabel = new UIText("Top Width", 30.0f, osgText::TextBase::LEFT_CENTER);
+	UIText* hLabel = new UIText("Height", 30.0f, osgText::TextBase::LEFT_CENTER);
 	
 	
 	
-	_bknd->addChild(_bottomWidth);
-	_bknd->addChild(_centerPos);
+	list->addChild(cLabel);
+	list->addChild(_centerPos);
+	list->addChild(bLabel);
+	list->addChild(_bottomWidth);
+	list->addChild(tLabel);
+	list->addChild(_topWidth);
+	list->addChild(hLabel);
+	list->addChild(_height);
+	
 	
 }
 
 void TentWindow::uiCallback(UICallbackCaller* ui) {
 	if (ui == _bottomWidth) {
 		std::cout << "Width: " << _bottomWidth->getAdjustedValue() << std::endl;
-		_tent->setPercentSize(osg::Vec3(_bottomWidth->getAdjustedValue()*4, 0.015, 1));
 		_volume->_computeUniforms["OpacityWidth"]->set(_bottomWidth->getAdjustedValue()*2);
 		_tent->addUniform("Width", _bottomWidth->getAdjustedValue()*2);
+
+		_tent->changeBottomVertices(_bottomWidth->getAdjustedValue());
 		
+	}
+	if (ui == _topWidth) {
+		float width = _tent->changeTopVertices(_topWidth->getAdjustedValue());
+		_volume->_computeUniforms["OpacityTopWidth"]->set(width);
 	}
 	if (ui == _centerPos) {
 		std::cout << "Center: " << _centerPos->getAdjustedValue() << std::endl;
-		_tent->setPercentPos(osg::Vec3(_centerPos->getAdjustedValue(), -0.1, -0.5));
+		_tent->setPercentPos(osg::Vec3(_centerPos->getAdjustedValue(), 0.0, 0.0));
 		_volume->_computeUniforms["OpacityCenter"]->set(_centerPos->getAdjustedValue());
 		_tent->addUniform("Center", _centerPos->getAdjustedValue());
+	}
+	if (ui == _height) {
+		_tent->changeHeight(_height->getAdjustedValue());
+		_volume->_computeUniforms["OpacityMult"]->set(_height->getAdjustedValue());
 	}
 	_volume->setDirtyAll();
 	
@@ -497,14 +542,15 @@ void Tent::createGeometry()
 	_transform->addChild(_geode);
 
 	_intersect->setNodeMask(cvr::INTERSECT_MASK);
-	osg::Geometry* polyGeom = new osg::Geometry();
+	_polyGeom = new osg::Geometry();
 
 	
 	osg::Vec3 myCoords[] =
 	{
-		osg::Vec3(rightPointX, 0.0, 0.0),
-		osg::Vec3(0.0, 0.0, 0.5),
-		osg::Vec3(leftPointX, 0.0, 0.0)
+		osg::Vec3(rightPointX, 0.0, -1.0),
+		osg::Vec3(topPointX, 0.0, height),
+		osg::Vec3(topPointX, 0.0, height),
+		osg::Vec3(leftPointX, 0.0, -1.0)
 
 	};
 	int numCoords = sizeof(myCoords) / sizeof(osg::Vec3);
@@ -512,19 +558,22 @@ void Tent::createGeometry()
 	osg::Vec3Array* vertices = new osg::Vec3Array(numCoords, myCoords);
 
 	
-	polyGeom->setVertexArray(vertices);
+	_polyGeom->setVertexArray(vertices);
 
-	polyGeom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES, 0, 3));
+	_polyGeom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, numCoords));
 
-	_geode->addDrawable(polyGeom);
+	_geode->addDrawable(_polyGeom);
 
 
 	osg::Vec2Array* texcoords = new osg::Vec2Array;
 	texcoords->push_back(osg::Vec2(1, 0));
-	texcoords->push_back(osg::Vec2(0.5, 1));
+	texcoords->push_back(osg::Vec2(0.5 + (topPointX/2.0), 1));
+	texcoords->push_back(osg::Vec2(0.5 - (topPointX/2.0), 1));
 	texcoords->push_back(osg::Vec2(0, 0));
+	
 
-	polyGeom->setVertexAttribArray(1, texcoords, osg::Array::BIND_PER_VERTEX);
+
+	_polyGeom->setVertexAttribArray(1, texcoords, osg::Array::BIND_PER_VERTEX);
 	setTransparent(true);
 
 	updateGeometry();
@@ -532,6 +581,28 @@ void Tent::createGeometry()
 
 void Tent::updateGeometry()
 {
+
+	osg::Vec3 myCoords[] =
+	{
+		osg::Vec3(rightPointX, 0.0, -1.0),
+		osg::Vec3(topPointX, 0.0, height),
+		osg::Vec3(-topPointX, 0.0, height),
+		osg::Vec3(leftPointX, 0.0, -1.0)
+
+	};
+	int numCoords = sizeof(myCoords) / sizeof(osg::Vec3);
+
+	osg::Vec3Array* vertices = new osg::Vec3Array(numCoords, myCoords);
+	_polyGeom->setVertexArray(vertices);
+
+	osg::Vec2Array* texcoords = new osg::Vec2Array;	//Memory Leak?
+	texcoords->push_back(osg::Vec2(1, 0));
+	texcoords->push_back(osg::Vec2(.5 + ((topPointX / rightPointX) / 2.0), 1));
+	texcoords->push_back(osg::Vec2(.5 - ((topPointX / rightPointX) / 2.0), 1));
+	texcoords->push_back(osg::Vec2(0, 0));
+
+	_polyGeom->setVertexAttribArray(1, texcoords, osg::Array::BIND_PER_VERTEX);
+
 	osg::Vec4Array* colors = new osg::Vec4Array;
 	colors->push_back(_color);
 	((osg::Geometry*)_geode->getDrawable(0))->setColorArray(colors, osg::Array::BIND_OVERALL);
@@ -624,7 +695,24 @@ osg::Program* Tent::getOrLoadProgram()
 	return _triangleProg;
 }
 
+void Tent::changeBottomVertices(float x) {
+	rightPointX = x;
+	leftPointX = -x;
+	topPointX = std::min(actualTop, rightPointX);
+	updateGeometry();
+}
 
+float Tent::changeTopVertices(float x) {
+	actualTop = x;
+	topPointX = std::min(x, rightPointX);
+	updateGeometry();
+	return topPointX;
+}
+
+void Tent::changeHeight(float x) {
+	height = x - 1.0;
+	updateGeometry();
+}
 
 #pragma region ColorPicker
 

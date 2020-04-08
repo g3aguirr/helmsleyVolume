@@ -41,6 +41,7 @@ protected:
 	cvr::MenuRangeValueCompact* opacityMult;
 	cvr::MenuRangeValueCompact* opacityCenter;
 	cvr::MenuRangeValueCompact* opacityWidth;
+	cvr::MenuRangeValueCompact* opacityTop;
 
 	cvr::MenuCheckbox* adaptiveQuality;
 	cvr::MenuCheckbox* highlightColon;

@@ -4,6 +4,7 @@
 #define UI_BACKGROUND_COLOR osg::Vec4(0.3, 0.3, 0.3, 1)
 #define UI_ACTIVE_COLOR osg::Vec4(0.8, 1, 0.8, 1)
 #define UI_INACTIVE_COLOR osg::Vec4(1, 0.8, 0.8, 1)
+#define UI_BLUE_COLOR osg::Vec4(0.8, 0.9, 1.0, 1)
 
 #include <cvrMenu/NewUI/UIButton.h>
 #include <cvrMenu/NewUI/UICheckbox.h>
@@ -242,6 +243,9 @@ public:
 	{
 		leftPointX = -.25;
 		rightPointX = .25;
+		topPointX = 0.0;
+		actualTop = 0.0;
+		height = 0.0;
 		_color = color;
 		_geode = new osg::Geode();
 		createGeometry();
@@ -255,6 +259,9 @@ public:
 		addUniform("SV", osg::Vec2(1.0f, 1.0f));
 	}
 
+	void changeBottomVertices(float x);
+	float changeTopVertices(float x);
+	void changeHeight(float x);
 	virtual void createGeometry();
 	virtual void updateGeometry();
 
@@ -283,6 +290,8 @@ public:
 protected:
 	osg::ref_ptr<osg::MatrixTransform> _transform;
 	osg::ref_ptr<osg::Geode> _geode;
+	osg::Geometry* _polyGeom;
+	osg::Vec3* _coords;
 
 	static osg::Program* getOrLoadProgram();
 	static osg::Program* _triangleProg;
@@ -293,7 +302,9 @@ protected:
 
 	float leftPointX;
 	float rightPointX;
-
+	float topPointX;
+	float height;
+	float actualTop; 
 	osg::ref_ptr<osg::Program> _program;
 	std::map<std::string, osg::Uniform*> _uniforms;
 
@@ -311,6 +322,8 @@ private:
 	Tent* _tent;
 	CallbackSlider* _bottomWidth;
 	CallbackSlider* _centerPos;
+	CallbackSlider* _topWidth;
+	CallbackSlider* _height;
 	VolumeGroup* _volume;
 };
 

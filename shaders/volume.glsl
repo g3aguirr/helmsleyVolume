@@ -20,7 +20,8 @@ uniform float ContrastTop;
 
 uniform float OpacityCenter;
 uniform float OpacityWidth;
-uniform float OpacityMult;
+uniform float OpacityTopWidth;
+uniform float OpacityMult = 1.0;
 
 uniform vec3 WorldScale;
 uniform vec3 TexelSize;
@@ -59,14 +60,14 @@ vec4 Sample(ivec3 p) {
 
 
 //	s.a = 1 - (abs(OpacityCenter - ra.r) / OpacityWidth);
-//	s.a *= OpacityMult;
+
 
 	
-	s.a = smoothstep(OpacityCenter - (OpacityWidth/2.0), OpacityCenter, ra.r);
+	s.a = smoothstep((OpacityCenter-OpacityTopWidth) - (OpacityWidth/2.0), OpacityCenter - OpacityTopWidth, ra.r);
 	if(s.a == 1.0){
-		s.a = 1.0 - smoothstep(OpacityCenter, OpacityCenter + (OpacityWidth/2.0), ra.r);
+		s.a = 1.0 - smoothstep(OpacityCenter+OpacityTopWidth, OpacityCenter+ OpacityTopWidth + (OpacityWidth/2.0), ra.r);
 	}
-
+	s.a *= OpacityMult;
 	#ifdef COLOR_FUNCTION
 		s.rgb = COLOR_FUNCTION
 	#else
